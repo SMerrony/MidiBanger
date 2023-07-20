@@ -23,9 +23,6 @@ add_executable(
     usb_descriptors.c
 )
 
-# pico_enable_stdio_usb(midiplayer 1)
-# pico_enable_stdio_uart(midiplayer 1)
-
 pico_add_extra_outputs(midiplayer)
 
 target_compile_options(midiplayer PRIVATE -Werror -Wall -Wextra)

@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: 2023 Stephen Merrony
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 #include <math.h>
 
 #include "bsp/board.h"
@@ -6,13 +11,14 @@
 #include "pico/stdlib.h"
 #include "tusb.h"
 
+#include "speaker.h"
+
 #define SPEAKER_PIN 15
 
 #define NOTE_OFF 8
 #define NOTE_ON  9
 
-uint slice_num;
-pwm_config spkr_config;
+#define C_PIN 16
 
 static float midinotes[128];	// the frequencies for each standard MIDI note
 
@@ -25,21 +31,24 @@ void setup_midinotes() {
 	}
 }
 
-/* play_speaker_note is a quick hack to check that the MIDI is basically working.
-   @param freq is expressed in Hertz
-   @param velocity is 0 .. 127 as per MIDI spec. N.B. With a directly connected tiny passive speaker,
-   			the volume control doesn't really work. 
-*/
-void play_speaker_note(float freq, uint8_t velocity) {
-	float div = (float)clock_get_hz(clk_sys) / (freq * 10000);
-	uint duty_cycle = (5000 * velocity) / 127;   // in theory max. vol is 50% duty cycle
-	pwm_config_set_clkdiv(&spkr_config, div);
-	pwm_config_set_wrap(&spkr_config, 10000); 
-	pwm_init(slice_num, &spkr_config, true);     // start the pwm running according to the config
-	pwm_set_gpio_level(SPEAKER_PIN, duty_cycle); //connect the pin to the pwm engine and set the on/off level. 
+void setup_gpio() {
+	gpio_init(C_PIN);
+	gpio_set_dir(C_PIN, GPIO_OUT);
 }
 
-void handle_msg(const uint8_t msg[3]) {
+void set_gpio(const uint note) {
+	if (note == 60) { // middle C
+		gpio_put(C_PIN, true);
+	}
+}
+
+void clear_gpio(const uint note) {
+	if (note == 60) {
+		gpio_put(C_PIN, false);
+	}
+}
+
+void handle_event(const uint8_t msg[3]) {
     // int ch;
     int event;
 
@@ -49,9 +58,11 @@ void handle_msg(const uint8_t msg[3]) {
 	switch (event) {
 		case NOTE_OFF:		// Note Off
 			play_speaker_note(1.0, 0);
+			clear_gpio(msg[1]);
 			break;
 		case NOTE_ON:		// Note On
 			play_speaker_note(midinotes[msg[1]], msg[2]);
+			set_gpio(msg[1]);
 			break;
 		default:
 			break;
@@ -78,7 +89,7 @@ void process_midi() {
 			} else {
 				sysex = (msg[0] == 0xf0);
 				if (!sysex) {	// we're ignoring sysex for now
-					handle_msg(msg);
+					handle_event(msg);
 				}
 			}
 		}
@@ -90,12 +101,9 @@ int main() {
 	board_init();
 	tud_init(BOARD_TUD_RHPORT);
 
-	// set up PWM output for the speaker
-	gpio_set_function(SPEAKER_PIN, GPIO_FUNC_PWM);
-	slice_num = pwm_gpio_to_slice_num(SPEAKER_PIN);
-	spkr_config = pwm_get_default_config();
-
 	setup_midinotes();
+	setup_gpio();
+	setup_speaker(SPEAKER_PIN);
 
 	// for (int mn = 69; mn <= 69 + 12; ++mn) {
 	// 	play_speaker_note(midinotes[mn], 5000);

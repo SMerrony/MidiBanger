@@ -20,6 +20,7 @@ pico_sdk_init()
 add_executable(
     midiplayer
     midiplayer.c
+    speaker.c
     usb_descriptors.c
 )
 

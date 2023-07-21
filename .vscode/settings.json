@@ -2,5 +2,6 @@
     "files.associations": {
         "pwm.h": "c",
         "stdlib.h": "c"
-    }
+    },
+    "cmake.configureOnOpen": true
 }

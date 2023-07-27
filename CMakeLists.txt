@@ -22,6 +22,7 @@ add_executable(
     midiplayer.c
     gpio.c
     midi.c
+    servo.c
     speaker.c
     usb_descriptors.c
 )

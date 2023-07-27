@@ -9,11 +9,10 @@
 
 #include "gpio.h"
 #include "midi.h"
+#include "servo.h"
 #include "speaker.h"
 
 #define SPEAKER_PIN 15
-
-#define C_PIN 16
 
 int main() {
 

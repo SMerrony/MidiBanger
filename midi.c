@@ -10,9 +10,14 @@
 #include "tusb.h"
 
 #include "gpio.h"
+#include "servo.h"
 #include "speaker.h"
 
+#define SERVO_PIN 1
+
 static float midinotes[128];	// the frequencies for each standard MIDI note
+
+servo_t servo;
 
 /* setup_midinotes populates the midinotes array with the frequencies
    required assuming equal temperament, and A = 400Hz 
@@ -21,6 +26,7 @@ void setup_midinotes() {
 	for (int m = 0; m < 128; m++) {
 		midinotes[m] = pow(2.0, ((m - 69) / 12.0)) * 440.0;
 	}
+	servo = setup_servo(SERVO_PIN);
 }
 
 void handle_event(const uint8_t msg[3]) {
@@ -33,10 +39,16 @@ void handle_event(const uint8_t msg[3]) {
 	switch (event) {
 		case NOTE_OFF:		// Note Off
 			play_speaker_note(1.0, 0);
+			if (msg[1] == 64) {
+				servo_set_angle(&servo, 0);
+			}
 			clear_gpio(msg[1]);
 			break;
 		case NOTE_ON:		// Note On
 			play_speaker_note(midinotes[msg[1]], msg[2]);
+			if (msg[1] == 64) {
+				servo_set_angle(&servo, 90);
+			}
 			set_gpio(msg[1]);
 			break;
 		default:

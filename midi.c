@@ -14,6 +14,10 @@
 #include "speaker.h"
 
 #define SERVO_PIN 1
+#define SERVO_MIN_DUTY 500
+#define SERVO_MAX_DUTY 2400
+#define SERVO_MIN_ANGLE 0
+#define SERVO_MAX_ANGLE 180
 
 static float midinotes[128];	// the frequencies for each standard MIDI note
 
@@ -26,7 +30,7 @@ void setup_midinotes() {
 	for (int m = 0; m < 128; m++) {
 		midinotes[m] = pow(2.0, ((m - 69) / 12.0)) * 440.0;
 	}
-	servo = setup_servo(SERVO_PIN);
+	servo_setup(&servo, SERVO_PIN, SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
 }
 
 void handle_event(const uint8_t msg[3]) {

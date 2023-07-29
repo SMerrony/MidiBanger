@@ -8,10 +8,12 @@
 #include "hardware/clocks.h"
 #include "hardware/pwm.h"
 
+static servo_t *servo_map[127] = {0};  // maps MIDI notes to servos
+
 /* setup_servo initialises a servo_t struct according to the passed parameters and then start the PWM
                by calling servo_start.  It must be called before using the servo. 
                The duty parameters are expressed in microseconds, the angles in degrees. */
-void servo_setup(servo_t *servo, uint pin, uint16_t zero_duty, uint16_t full_duty, uint16_t min_angle, uint16_t max_angle) {
+void servo_setup(servo_t *servo, uint pin, uint16_t note, uint16_t zero_duty, uint16_t full_duty, uint16_t min_angle, uint16_t max_angle) {
     servo->pin = pin;
     servo->zero_duty = zero_duty;
     servo->full_duty = full_duty;
@@ -33,22 +35,34 @@ void servo_setup(servo_t *servo, uint pin, uint16_t zero_duty, uint16_t full_dut
     pwm_config_set_wrap(&config, 20000);
     pwm_init(servo->slice_num, &config, false);
 
+    servo_map[note] = servo;
+
     servo_start(servo, min_angle);
 }
 
 void servo_start(const servo_t *s, uint16_t start_angle) {
-    const uint chan = pwm_gpio_to_channel(s->pin);
-    uint16_t pulse = (start_angle - s->min_angle) * s->full_duty / s->angle_range + s->zero_duty;
-    pwm_set_chan_level(s->slice_num, chan, pulse);
-    pwm_set_enabled(s->slice_num, true);
+    if (s != NULL) {
+        const uint chan = pwm_gpio_to_channel(s->pin);
+        uint16_t pulse = (start_angle - s->min_angle) * s->full_duty / s->angle_range + s->zero_duty;
+        pwm_set_chan_level(s->slice_num, chan, pulse);
+        pwm_set_enabled(s->slice_num, true);
+    }
 }
 
 void servo_stop(const servo_t *servo) {
-    pwm_set_enabled(servo->slice_num, false);
+    if (servo != NULL) {
+        pwm_set_enabled(servo->slice_num, false);
+    }
 }
 
 void servo_set_angle(const servo_t *s, uint16_t angle) {
-    const uint chan = pwm_gpio_to_channel(s->pin);
-    const uint16_t level = (angle - s->min_angle) * s->full_duty / s->angle_range + s->zero_duty;
-    pwm_set_chan_level(s->slice_num, chan, level);
+    if (s != NULL) {
+        const uint chan = pwm_gpio_to_channel(s->pin);
+        const uint16_t level = (angle - s->min_angle) * s->full_duty / s->angle_range + s->zero_duty;
+        pwm_set_chan_level(s->slice_num, chan, level);
+    }
+}
+
+servo_t * servo_for_note(uint16_t note) {
+    return servo_map[note];
 }

@@ -19,6 +19,8 @@
 #define SERVO_MIN_ANGLE 0
 #define SERVO_MAX_ANGLE 180
 
+#define NOTE_E 64
+
 static float midinotes[128];	// the frequencies for each standard MIDI note
 
 servo_t servo;
@@ -30,7 +32,7 @@ void setup_midinotes() {
 	for (int m = 0; m < 128; m++) {
 		midinotes[m] = pow(2.0, ((m - 69) / 12.0)) * 440.0;
 	}
-	servo_setup(&servo, SERVO_PIN, SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
+	servo_setup(&servo, SERVO_PIN, NOTE_E, SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
 }
 
 void handle_event(const uint8_t msg[3]) {
@@ -43,16 +45,12 @@ void handle_event(const uint8_t msg[3]) {
 	switch (event) {
 		case NOTE_OFF:		// Note Off
 			play_speaker_note(1.0, 0);
-			if (msg[1] == 64) {
-				servo_set_angle(&servo, 0);
-			}
+			servo_set_angle(servo_for_note(msg[1]), 0);
 			clear_gpio(msg[1]);
 			break;
 		case NOTE_ON:		// Note On
 			play_speaker_note(midinotes[msg[1]], msg[2]);
-			if (msg[1] == 64) {
-				servo_set_angle(&servo, 90);
-			}
+			servo_set_angle(servo_for_note(msg[1]), 90);
 			set_gpio(msg[1]);
 			break;
 		default:

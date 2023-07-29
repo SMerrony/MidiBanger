@@ -36,6 +36,7 @@ void servo_setup(servo_t *servo, uint pin, uint16_t note, uint16_t zero_duty, ui
     pwm_init(servo->slice_num, &config, false);
 
     servo_map[note] = servo;
+    servo->reset = at_the_end_of_time;
 
     servo_start(servo, min_angle);
 }
@@ -65,4 +66,8 @@ void servo_set_angle(const servo_t *s, uint16_t angle) {
 
 servo_t * servo_for_note(uint16_t note) {
     return servo_map[note];
+}
+
+void servo_set_reset_time(servo_t *servo, absolute_time_t when) {
+    servo->reset = when;
 }

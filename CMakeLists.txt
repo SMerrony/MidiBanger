@@ -38,6 +38,7 @@ target_link_libraries(
     hardware_clocks
     hardware_pwm
     # pico_cyw43_arch_lwip_threadsafe_background 
+    pico_multicore
     pico_stdlib
     tinyusb_device
     tinyusb_board

@@ -22,12 +22,14 @@ typedef struct {
     uint16_t max_angle;
     uint16_t duty_range;    // calculated for efficiency
     uint16_t angle_range;   // calculated for efficiency
+    absolute_time_t reset;
 } servo_t;
 
 void servo_setup(servo_t *servo, uint pin, uint16_t note, uint16_t zero_duty, uint16_t full_duty, uint16_t min_angle, uint16_t max_angle);
 void servo_start(const servo_t *servo, uint16_t start_angle);
 void servo_stop(const servo_t *servo);
 void servo_set_angle(const servo_t *servo, uint16_t angle);
+void servo_set_reset_time(servo_t *servo, absolute_time_t when);
 servo_t * servo_for_note(uint16_t note);
 
 #endif

@@ -14,33 +14,33 @@
 #include "servo.h"
 #include "speaker.h"
 
-#define SERVO_PIN 1
 #define SERVO_MIN_DUTY 500
 #define SERVO_MAX_DUTY 2400
 #define SERVO_MIN_ANGLE 0
 #define SERVO_MAX_ANGLE 180
 
-#define PERCUSSION true
-#define PERCUSSIVE_RETURN_MS 75
+#define PERCUSSION true		    // is this is a mallet-type instrument where the 'hammer' is returned after striking?
+#define PERCUSSIVE_RETURN_MS 75 // period before 'hammer' starts to return (may influence length of stroke)
 
-#define NOTE_E 64
+/********************************************************************************/
+/****** Start of Servo mapping - N.B. The next 3 items must be kep in sync ******/
+
+// the number of servos are we controlling
+#define NUM_SERVOS 2
+
+// we define up to 16 PWM pins attached to servos
+static const uint servo_pins[NUM_SERVOS] = {2, 1};
+
+// the MIDI notes corresponding to each servo
+static const uint16_t servo_notes[NUM_SERVOS] = {60, 64};
+
+/****** End of Servo mapping ******/
+/**********************************/
+
+#define NOTE_NOT_MAPPED -1
 
 static float midinotes[128];	// the frequencies for each standard MIDI note
-static servo_t servos[MAX_SERVOS] = {0};
-
-/* resetter_task performs the percussive returns */
-void resetter_task() {
-	while (true){
-		for (int s = 0; s < MAX_SERVOS; ++s) {
-			if (! is_at_the_end_of_time(servos[s].reset)) {
-				if (absolute_time_diff_us(servos[s].reset, get_absolute_time()) > 0) {
-					servo_set_angle(&servos[s], 0);
-					servos[s].reset = at_the_end_of_time;
-				}
-			}
-		}
-	}
-}
+static int map_notes_to_servos[128];
 
 /* setup_midinotes populates the midinotes array with the frequencies
    required assuming equal temperament, and A = 400Hz 
@@ -48,8 +48,13 @@ void resetter_task() {
 void setup_midinotes() {
 	for (int m = 0; m < 128; m++) {
 		midinotes[m] = pow(2.0, ((m - 69) / 12.0)) * 440.0;
+		map_notes_to_servos[m] = NOTE_NOT_MAPPED;
 	}
-	servo_setup(&servos[0], SERVO_PIN, NOTE_E, SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
+	for (int s = 0; s < NUM_SERVOS; ++s) {
+		servo_setup(s, servo_pins[s], SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
+		map_notes_to_servos[servo_notes[s]] = s;
+		busy_wait_ms(100); // reduce PSU stress by not starting all servos at the same time
+	}
 	if (PERCUSSION) {
 		multicore_launch_core1(resetter_task);
 	}
@@ -65,14 +70,20 @@ void handle_event(const uint8_t msg[3]) {
 	switch (event) {
 		case NOTE_OFF:		// Note Off
 			play_speaker_note(1.0, 0);
-			servo_set_angle(servo_for_note(msg[1]), 0);
+			if (map_notes_to_servos[msg[1]] != NOTE_NOT_MAPPED) {
+				servo_set_angle(map_notes_to_servos[msg[1]], 0);
+			}
 			clear_gpio(msg[1]);
 			break;
 		case NOTE_ON:		// Note On
 			play_speaker_note(midinotes[msg[1]], msg[2]);
-			servo_set_angle(servo_for_note(msg[1]), 90);
-			// test auto-return for percussion...
-			if (PERCUSSION)	servo_set_reset_time(servo_for_note(msg[1]), delayed_by_ms(get_absolute_time(), PERCUSSIVE_RETURN_MS));
+			if (map_notes_to_servos[msg[1]] != NOTE_NOT_MAPPED) {
+				servo_set_angle(map_notes_to_servos[msg[1]], 90);
+				// test auto-return for percussion...
+				if (PERCUSSION)	{
+					servo_set_reset_time(map_notes_to_servos[msg[1]], delayed_by_ms(get_absolute_time(), PERCUSSIVE_RETURN_MS));
+				}
+			}
 			set_gpio(msg[1]);
 			break;
 		default:

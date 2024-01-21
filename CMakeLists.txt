@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Stephen Merrony
 # SPDX-License-Identifier: BSD-3-Clause
 
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.28)
 
 include(pico_sdk_import.cmake)
 
@@ -20,7 +20,7 @@ pico_sdk_init()
 add_executable(
     midiplayer
     midiplayer.c
-    gpio.c
+    # gpio.c
     midi.c
     servo.c
     speaker.c
@@ -29,7 +29,7 @@ add_executable(
 
 pico_add_extra_outputs(midiplayer)
 
-target_compile_options(midiplayer PRIVATE -Werror -Wall -Wextra)
+target_compile_options(midiplayer PRIVATE -Werror -Wall)
 
 target_include_directories(midiplayer PRIVATE ${CMAKE_CURRENT_LIST_DIR} )
 

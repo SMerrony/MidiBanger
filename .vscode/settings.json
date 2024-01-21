@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "pwm.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "board.h": "c"
     },
     "cmake.configureOnOpen": true
 }

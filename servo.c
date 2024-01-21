@@ -8,13 +8,18 @@
 #include "hardware/clocks.h"
 #include "hardware/pwm.h"
 
+#include "config.h"
+
 static servo_t servos[MAX_SERVOS] = {0};
 
+static int servos_in_use = 0;
+
 /* resetter_task performs the percussive returns.
-   It loops over each servo and checks if its reset time has passed */
+   It loops over each servo and checks if its reset time has passed.
+   N.B. Must not be called until all servo_setup() calls are completed. */
 void resetter_task() {
 	while (true){
-		for (int s = 0; s < MAX_SERVOS; ++s) {
+		for (int s = 0; s < servos_in_use; ++s) {
 			if (! is_at_the_end_of_time(servos[s].reset)) {
 				if (absolute_time_diff_us(servos[s].reset, get_absolute_time()) > 0) {
 					servo_set_angle(s, servos[s].min_angle);
@@ -56,6 +61,13 @@ void servo_setup(int servo, uint pin, uint16_t zero_duty, uint16_t full_duty, ui
     servos[servo].reset = at_the_end_of_time;
 
     servo_start(servo, min_angle);
+
+    servo_set_angle(servo, 90);
+    busy_wait_ms(PERCUSSIVE_RETURN_MS);
+    servo_set_angle(servo, 0);
+
+
+    servos_in_use++;
 }
 
 void servo_start(const int s, uint16_t start_angle) {

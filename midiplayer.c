@@ -7,7 +7,7 @@
 #include "pico/stdlib.h"
 #include "tusb.h"
 
-#include "gpio.h"
+// #include "gpio.h"
 #include "midi.h"
 #include "servo.h"
 #include "speaker.h"
@@ -20,7 +20,7 @@ int main() {
 	tud_init(BOARD_TUD_RHPORT);
 
 	setup_midinotes();
-	setup_gpio();
+	// setup_gpio();
 	setup_speaker(SPEAKER_PIN);
 
 	// for (int mn = 60; mn <= 60 + 12; ++mn) {

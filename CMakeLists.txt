@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.28)
 
 include(pico_sdk_import.cmake)
 
-project(midiplayer 
+project(midibanger 
         VERSION 0.1.0
         LANGUAGES C CXX ASM)
 
@@ -18,22 +18,22 @@ set(PICO_BOARD pico) # or pico_w
 pico_sdk_init()
 
 add_executable(
-    midiplayer
-    src/midiplayer.c
+    midibanger
+    src/midibanger.c
     src/midi.c
     src/servo.c
     src/speaker.c
     src/usb_descriptors.c
 )
 
-pico_add_extra_outputs(midiplayer)
+pico_add_extra_outputs(midibanger)
 
-target_compile_options(midiplayer PRIVATE -Werror -Wall)
+target_compile_options(midibanger PRIVATE -Werror -Wall)
 
-target_include_directories(midiplayer PRIVATE ${CMAKE_CURRENT_LIST_DIR} src)
+target_include_directories(midibanger PRIVATE ${CMAKE_CURRENT_LIST_DIR} src)
 
 target_link_libraries(
-    midiplayer
+    midibanger
     hardware_clocks
     hardware_pwm
     pico_multicore

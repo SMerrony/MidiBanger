@@ -21,10 +21,10 @@ int main() {
 
 	setup_midinotes();
 	
-#ifdef WITH_SPEAKER
-	setup_speaker(SPEAKER_PIN);
-	play_speaker_note(1.0, 0);
-#endif
+	if (WITH_SPEAKER) {
+		setup_speaker(SPEAKER_PIN);
+		play_speaker_note(1.0, 0);
+	}
 
 	while (true) {
 		tud_task();

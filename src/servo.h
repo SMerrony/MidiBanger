@@ -8,7 +8,7 @@
 
 #include "pico/stdlib.h"
 
-/* MAX_SERVOS is the max number of servos one (Pico) device can manage via PWM */
+/* MAX_SERVOS is the max number of servos one (Pico) device can manage directly via PWM. */
 #define MAX_SERVOS 16
 
 typedef struct {

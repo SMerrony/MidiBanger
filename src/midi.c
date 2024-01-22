@@ -16,6 +16,7 @@
 
 #include "config.h"
 
+static const int OUR_CHANNEL = MIDI_CHANNEL - 1;
 static notepins_t notepins = NOTEPIN_INITIALISER;
 static int noteservos[127];
 
@@ -42,35 +43,38 @@ void setup_midinotes() {
 }
 
 void handle_event(const uint8_t msg[3]) {
-    // int ch;
+    int ch;
     int event;
 
-    // ch = msg[0] & 0xf;
-    event = (msg[0] >> 4) & 0xf;
+    ch = msg[0] & 0xf;
 
-	switch (event) {
-		case NOTE_OFF:
-			if (notepins[msg[1]] != NOTE_NOT_MAPPED) {
-#ifdef WITH_SPEAKER
-				play_speaker_note(1.0, 0);
-#endif
-				servo_set_angle(noteservos[msg[1]], 0);
-			}
-			break;
-		case NOTE_ON:
-			if (notepins[msg[1]] != NOTE_NOT_MAPPED) {
-#ifdef WITH_SPEAKER			
-				play_speaker_note(midinotes[msg[1]], msg[2]);
-#endif
-				servo_set_angle(noteservos[msg[1]], 90);
-				// test auto-return for percussion...
-				if (PERCUSSION)	{
-					servo_set_reset_time(noteservos[msg[1]], delayed_by_ms(get_absolute_time(), PERCUSSIVE_RETURN_MS));
+	if (ch == OUR_CHANNEL) {
+		event = (msg[0] >> 4) & 0xf;
+
+		switch (event) {
+			case NOTE_OFF:
+				if (notepins[msg[1]] != NOTE_NOT_MAPPED) {
+			 		if (WITH_SPEAKER) {
+						play_speaker_note(1.0, 0);
+					}
+					servo_set_angle(noteservos[msg[1]], 0);
 				}
-			}
-			break;
-		default:
-			break;
+				break;
+			case NOTE_ON:
+				if (notepins[msg[1]] != NOTE_NOT_MAPPED) {
+					if (WITH_SPEAKER) {
+						play_speaker_note(midinotes[msg[1]], msg[2]);
+					}
+					servo_set_angle(noteservos[msg[1]], 90);
+					// test auto-return for percussion...
+					if (PERCUSSION)	{
+						servo_set_reset_time(noteservos[msg[1]], delayed_by_ms(get_absolute_time(), PERCUSSIVE_RETURN_MS));
+					}
+				}
+				break;
+			default:
+				break;
+		}
 	}
 }
 

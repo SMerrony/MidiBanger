@@ -31,7 +31,7 @@ void setup_midinotes() {
 		if (notepins[m] != NOTE_NOT_MAPPED) {
 			servo_setup(srv, notepins[m], SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
 			noteservos[m] = srv;
-			busy_wait_ms(100); // reduce PSU stress by not starting all servos at the same time
+			busy_wait_ms(200); // reduce PSU stress by not starting all servos at the same time
 			srv++;
 		}
 	}
@@ -51,20 +51,22 @@ void handle_event(const uint8_t msg[3]) {
 	switch (event) {
 		case NOTE_OFF:
 			if (notepins[msg[1]] != NOTE_NOT_MAPPED) {
+#ifdef WITH_SPEAKER
 				play_speaker_note(1.0, 0);
+#endif
 				servo_set_angle(noteservos[msg[1]], 0);
-				// clear_gpio(msg[1]);
 			}
 			break;
 		case NOTE_ON:
 			if (notepins[msg[1]] != NOTE_NOT_MAPPED) {
+#ifdef WITH_SPEAKER			
 				play_speaker_note(midinotes[msg[1]], msg[2]);
+#endif
 				servo_set_angle(noteservos[msg[1]], 90);
 				// test auto-return for percussion...
 				if (PERCUSSION)	{
 					servo_set_reset_time(noteservos[msg[1]], delayed_by_ms(get_absolute_time(), PERCUSSIVE_RETURN_MS));
 				}
-				// set_gpio(msg[1]);
 			}
 			break;
 		default:

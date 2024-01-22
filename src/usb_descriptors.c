@@ -25,6 +25,8 @@
 
 #include "tusb.h"
 
+#include "config.h"
+
 /* A combination of interfaces must have a unique product id, since PC will save device driver after the first plug.
  * Same VID/PID with different interface e.g MSC (first), then CDC (later) will possibly cause system error on PC.
  *
@@ -137,8 +139,8 @@ uint8_t const * tud_descriptor_configuration_cb(uint8_t index)
 char const* string_desc_arr [] =
 {
   (const char[]) { 0x09, 0x04 }, // 0: is supported language is English (0x0409)
-  "TinyUSB",                     // 1: Manufacturer
-  "TinyUSB Device",              // 2: Product
+  USB_MANUFACTURER,              // 1: Manufacturer
+  USB_PRODUCT,                   // 2: Product
   "123456",                      // 3: Serials, should use chip ID
 };
 

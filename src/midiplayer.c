@@ -12,7 +12,7 @@
 #include "servo.h"
 #include "speaker.h"
 
-#define SPEAKER_PIN 15
+#include "config.h"
 
 int main() {
 
@@ -20,15 +20,11 @@ int main() {
 	tud_init(BOARD_TUD_RHPORT);
 
 	setup_midinotes();
-	// setup_gpio();
+	
+#ifdef WITH_SPEAKER
 	setup_speaker(SPEAKER_PIN);
-
-	// for (int mn = 60; mn <= 60 + 12; ++mn) {
-	// 	play_speaker_note(midinotes[mn], 5000);
-	// 	busy_wait_ms(1000);
-	// }
-
 	play_speaker_note(1.0, 0);
+#endif
 
 	while (true) {
 		tud_task();

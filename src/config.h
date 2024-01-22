@@ -6,6 +6,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#define USB_MANUFACTURER "SMerrony"
+#define USB_PRODUCT      "MidiPlayer"
+
+// Speaker is just for debugging
+#define WITH_SPEAKER
+#define SPEAKER_PIN 15
+
 // Servo characteristics
 #define SERVO_MIN_DUTY 500
 #define SERVO_MAX_DUTY 2400

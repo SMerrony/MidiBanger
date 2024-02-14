@@ -66,11 +66,13 @@ void servo_setup(int servo, uint pin, uint16_t zero_duty, uint16_t full_duty, ui
 
     servos[servo].reset = at_the_end_of_time;
 
-    servo_start(servo, min_angle);
+    if (MULTI_PERCUSSION) {
+        servo_start(servo, min_angle);
+    }
 
-    servo_set_angle(servo, 90);
-    busy_wait_ms(PERCUSSIVE_RETURN_MS);
-    servo_set_angle(servo, 0);
+    // servo_set_angle(servo, 90);
+    // busy_wait_ms(PERCUSSIVE_RETURN_MS);
+    // servo_set_angle(servo, 0);
 
     servos_in_use++;
 }

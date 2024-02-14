@@ -22,6 +22,7 @@ static noteangles_t noteangles = NOTE_PAN_INITIALISER
 static int noteservos[127];
 
 static float midinotes[128];	// the frequencies for each standard MIDI note
+static uint8_t last_note = 0;
 
 /* setup_midinotes populates the midinotes array with the frequencies
    required assuming equal temperament, and A = 400Hz 
@@ -55,7 +56,7 @@ void setup_midinotes() {
 void handle_event(const uint8_t msg[3]) {
     int ch;
     int event;
-	uint8_t last_note = 0, this_note = 0;
+	uint8_t this_note = 0;
 
     ch = msg[0] & 0xf;
 

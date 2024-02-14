@@ -32,7 +32,7 @@
 #define PAN_AND_TILT true
 
 // Period before 'hammer' starts to return (may influence length of stroke)
-#define PERCUSSIVE_RETURN_MS 75 
+#define PERCUSSIVE_RETURN_MS 50
 
 // do not edit...
 #define NOTE_NOT_MAPPED -1
@@ -60,7 +60,7 @@ typedef int noteangles_t[128];
 #define TILT_PIN 4              // ...and for the tilt servo
 
 #define PAN_SETTLE_MS 175       // Time to wait for panning to settle before striking note
-#define PAN_REST_ANGLE 76       // Default postion at start-up
+#define PAN_REST_ANGLE 75       // Default postion at start-up
 #define TILT_REST_ANGLE 80      // Default hammer height
 #define TILT_STRIKE_ANGLE 77    // Striking height
 
@@ -68,8 +68,8 @@ typedef int noteangles_t[128];
                                 [72] = 102,\
                                 [74] = 96,\
                                 [76] = 90,\
-                                [77] = 83,\
-                                [79] = 76,\
+                                [77] = 82,\
+                                [79] = 75,\
                                 [81] = 68,\
                                 [83] = 62,\
                                 [84] = 56 };

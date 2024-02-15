@@ -18,11 +18,13 @@
 
 static const int OUR_CHANNEL = MIDI_CHANNEL - 1;
 static notepins_t notepins = NOTE_PIN_INITIALISER;
-static noteangles_t noteangles = NOTE_PAN_INITIALISER
+static noteangle_t noteangles = NOTE_PAN_INITIALISER
 static int noteservos[127];
 
 static float midinotes[128];	// the frequencies for each standard MIDI note
 static uint8_t last_note = 0;
+static uint16_t this_angle = PAN_REST_ANGLE;
+static uint16_t last_angle = PAN_REST_ANGLE;
 
 /* setup_midinotes populates the midinotes array with the frequencies
    required assuming equal temperament, and A = 400Hz 
@@ -52,6 +54,27 @@ void setup_midinotes() {
 		multicore_launch_core1(resetter_task);
 	}
 }
+
+// uint16_t get_80pct_move(uint16_t oldang, uint16_t newang) {
+// 	uint16_t res = newang;
+// 	if (newang > oldang) {
+// 		res = newang - oldang;
+// 		if (res > 10) {
+// 			return newang;
+// 		} else {
+// 			return oldang + ((res * 80) / 100);
+// 		}
+// 	}
+// 	if (newang < oldang) {
+// 		res = oldang - newang;
+// 		if (res > 10) {
+// 			return newang;
+// 		} else {
+// 			return oldang - ((res * 80) / 100);
+// 		}
+// 	}
+// 	return res;
+// }
 
 void handle_event(const uint8_t msg[3]) {
     int ch;
@@ -100,8 +123,15 @@ void handle_event(const uint8_t msg[3]) {
 						}
 						// Pan if necessary...
 						if (this_note != last_note){
-							servo_set_angle(PAN_SERVO, noteangles[this_note]);
+							this_angle = noteangles[this_note];
+							// uint16_t tmp_angle = get_80pct_move(last_angle, this_angle);
+							// if (tmp_angle != this_angle) {
+							// 	servo_set_angle(PAN_SERVO, tmp_angle);
+							// 	busy_wait_ms(PAN_SETTLE_MS);	
+							// }
+							servo_set_angle(PAN_SERVO, this_angle);
 							busy_wait_ms(PAN_SETTLE_MS);
+							last_angle = this_angle;
 						}
 						// Tilt (strike)...
 						servo_set_angle(TILT_SERVO, TILT_STRIKE_ANGLE);

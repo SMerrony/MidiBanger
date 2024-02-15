@@ -35,10 +35,13 @@
 #define PERCUSSIVE_RETURN_MS 50
 
 // do not edit...
-#define NOTE_NOT_MAPPED -1
+#define NOTE_NOT_MAPPED 0
 // The MIDI notes, C4 is middle-C in MIDI-speak.
 typedef int notepins_t[128];
-typedef int noteangles_t[128];
+typedef uint16_t noteangle_t[128];
+// Indices for the P&T servos - i.e which of the servos[] array to use
+#define PAN_SERVO 0
+#define TILT_SERVO 1  
 // ...end of do not edit section
 
 // The mapping of MIDI note numbers to GPIO pins for controlling the servos...
@@ -52,26 +55,22 @@ typedef int noteangles_t[128];
                                 [83] = 8,\
                                 [84] = 9 };
 
-// Indices for the P&T servos
-#define PAN_SERVO 0
-#define TILT_SERVO 1                                
-
 #define PAN_PIN  3              // GPIO pin for the pan servo control signal
 #define TILT_PIN 4              // ...and for the tilt servo
 
 #define PAN_SETTLE_MS 175       // Time to wait for panning to settle before striking note
-#define PAN_REST_ANGLE 75       // Default postion at start-up
+#define PAN_REST_ANGLE 74       // Default postion at start-up
 #define TILT_REST_ANGLE 80      // Default hammer height
 #define TILT_STRIKE_ANGLE 77    // Striking height
 
 #define NOTE_PAN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED,\
-                                [72] = 102,\
-                                [74] = 96,\
-                                [76] = 90,\
+                                [72] = 101,\
+                                [74] = 95,\
+                                [76] = 89,\
                                 [77] = 82,\
-                                [79] = 75,\
+                                [79] = 74,\
                                 [81] = 68,\
-                                [83] = 62,\
+                                [83] = 61,\
                                 [84] = 56 };
 
 #endif

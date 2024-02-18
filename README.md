@@ -21,14 +21,17 @@ Some sample 3D parts are included in the `3D` directory,
 ## Configuration
 See the comments in `src/config.h` for details.
 
+To avoid masses of commented-out congfiguration, I have put the configuration that is specific to a
+particular physical instrument in a separate file which is then `#include`d in the main `config.h`.
+Example configurations are `unknown_italian_glock_config.h` and `janod_toy_glock_config.h`.
+
 For the servo-per-note mode, the critical configuration item is the `NOTEPIN_INITIALISER`.  Leave its first line alone, then replace the contents with a maximum of sixteen [MIDI note number] = GPIO_PIN pairs.
 
 For the two-servo pan-and-tilt mode, it's the `NOTE_PAN_INITIALISER` that you will need to adjust to set the 
 angles for each note.
 
-If you are connecting up several MidiBangers, I suggest you use a different
-number for each one at the end of the `USB_PRODUCT` string.  It will make your
-life a lot simpler!
+If you are connecting up several MidiBangers I suggest you use a different string or
+number for each one at the end of the `USB_PRODUCT` string.  It will make your life a lot simpler!
 
 ## Building
 ```

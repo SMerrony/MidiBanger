@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef MIDI_H
-#define MIDI_H
+#pragma once
 
 #include "pico/stdlib.h"
 
@@ -14,5 +13,3 @@
 void setup_midinotes();
 void handle_event(const uint8_t msg[3]);
 void process_midi();
-
-#endif

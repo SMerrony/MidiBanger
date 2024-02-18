@@ -3,11 +3,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
-#define USB_MANUFACTURER "SMerrony"
-#define USB_PRODUCT      "MidiBanger1"
+#define USB_MANUFACTURER   "SMerrony"
 
 // MIDI Channel to listen on. 
 // N.B. This is expressed in the commonly-used MIDI channel numbering system 
@@ -15,7 +13,7 @@
 #define MIDI_CHANNEL 1
 
 // Speaker is just for debugging, set to false otherwise (it uses 1 of the 16 PWM channels)
-#define WITH_SPEAKER true
+#define WITH_SPEAKER false
 #define SPEAKER_PIN 15 
 
 // Servo characteristics, these are the spec. values, you may be able to exceed them.
@@ -23,16 +21,6 @@
 #define SERVO_MAX_DUTY 2400
 #define SERVO_MIN_ANGLE 0
 #define SERVO_MAX_ANGLE 180
-
-// Set MULTI_PERCUSSION to true if this is a multiple-mallet type instrument where the 'hammers' 
-// are returned after striking.  This uses the second core on the RP2020.
-#define MULTI_PERCUSSION false		
-
-// Set PAN_AND_TILT to true if this is a (single hammer) pan-and-tilt player.
-#define PAN_AND_TILT true
-
-// Period before 'hammer' starts to return (may influence length of stroke)
-#define PERCUSSIVE_RETURN_MS 50
 
 // do not edit...
 #define NOTE_NOT_MAPPED 0
@@ -44,6 +32,7 @@ typedef uint16_t noteangle_t[128];
 #define TILT_SERVO 1  
 // ...end of do not edit section
 
+/*
 // The mapping of MIDI note numbers to GPIO pins for controlling the servos...
 #define NOTE_PIN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED,\
                                 [72] = 2,\
@@ -54,23 +43,10 @@ typedef uint16_t noteangle_t[128];
                                 [81] = 7,\
                                 [83] = 8,\
                                 [84] = 9 };
+*/                                
 
-#define PAN_PIN  3              // GPIO pin for the pan servo control signal
-#define TILT_PIN 4              // ...and for the tilt servo
+#define PAN_PIN  6              // GPIO pin for the pan servo control signal
+#define TILT_PIN 10             // ...and for the tilt servo
 
-#define PAN_SETTLE_MS 175       // Time to wait for panning to settle before striking note
-#define PAN_REST_ANGLE 74       // Default postion at start-up
-#define TILT_REST_ANGLE 80      // Default hammer height
-#define TILT_STRIKE_ANGLE 77    // Striking height
-
-#define NOTE_PAN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED,\
-                                [72] = 101,\
-                                [74] = 95,\
-                                [76] = 89,\
-                                [77] = 82,\
-                                [79] = 74,\
-                                [81] = 68,\
-                                [83] = 61,\
-                                [84] = 56 };
-
-#endif
+// #include "chicco_toy_glock_config.h"
+#include "janod_toy_glock_config.h"

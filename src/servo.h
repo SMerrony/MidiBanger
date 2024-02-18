@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef SERVO_H
-#define SERVO_H
+#pragma once
 
 #include "pico/stdlib.h"
 
@@ -31,5 +30,3 @@ void servo_start(const int servo, uint16_t start_angle);
 void servo_stop(const int servo);
 void servo_set_angle(const int servo, uint16_t angle);
 void servo_set_reset_time(int servo, absolute_time_t when);
-
-#endif

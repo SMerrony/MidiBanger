@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: 2023 Stephen Merrony
+ * SPDX-FileCopyrightText: 2023, 2024 Stephen Merrony
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -27,7 +27,7 @@ static uint16_t this_angle = PAN_REST_ANGLE;
 static uint16_t last_angle = PAN_REST_ANGLE;
 
 /* setup_midinotes populates the midinotes array with the frequencies
-   required assuming equal temperament, and A = 400Hz 
+   required assuming equal temperament, and A = 440Hz 
 */
 void setup_midinotes() {
 	int srv = 0;
@@ -45,7 +45,7 @@ void setup_midinotes() {
 	if (PAN_AND_TILT) {
 		servo_setup(PAN_SERVO, PAN_PIN, SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
 		servo_start(PAN_SERVO, PAN_REST_ANGLE);
-		busy_wait_ms(200); // reduce PSU stress
+		busy_wait_ms(PAN_SETTLE_MS); // reduce PSU stress
 		servo_setup(TILT_SERVO, TILT_PIN, SERVO_MIN_DUTY, SERVO_MAX_DUTY, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
 		servo_start(TILT_SERVO, TILT_REST_ANGLE);
 	}
@@ -54,27 +54,6 @@ void setup_midinotes() {
 		multicore_launch_core1(resetter_task);
 	}
 }
-
-// uint16_t get_80pct_move(uint16_t oldang, uint16_t newang) {
-// 	uint16_t res = newang;
-// 	if (newang > oldang) {
-// 		res = newang - oldang;
-// 		if (res > 10) {
-// 			return newang;
-// 		} else {
-// 			return oldang + ((res * 80) / 100);
-// 		}
-// 	}
-// 	if (newang < oldang) {
-// 		res = oldang - newang;
-// 		if (res > 10) {
-// 			return newang;
-// 		} else {
-// 			return oldang - ((res * 80) / 100);
-// 		}
-// 	}
-// 	return res;
-// }
 
 void handle_event(const uint8_t msg[3]) {
     int ch;
@@ -124,11 +103,6 @@ void handle_event(const uint8_t msg[3]) {
 						// Pan if necessary...
 						if (this_note != last_note){
 							this_angle = noteangles[this_note];
-							// uint16_t tmp_angle = get_80pct_move(last_angle, this_angle);
-							// if (tmp_angle != this_angle) {
-							// 	servo_set_angle(PAN_SERVO, tmp_angle);
-							// 	busy_wait_ms(PAN_SETTLE_MS);	
-							// }
 							servo_set_angle(PAN_SERVO, this_angle);
 							busy_wait_ms(PAN_SETTLE_MS);
 							last_angle = this_angle;

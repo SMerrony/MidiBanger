@@ -18,19 +18,19 @@
 #define PERCUSSIVE_RETURN_MS 50
 
 #define PAN_SETTLE_MS 125       // Time to wait for panning to settle before striking note
-#define PAN_REST_ANGLE 75       // Default postion at start-up
-#define TILT_REST_ANGLE 80      // Default hammer height
+#define PAN_REST_ANGLE 87       // Default postion at start-up
+#define TILT_REST_ANGLE 83      // Default hammer height
 #define TILT_STRIKE_ANGLE 74    // Striking height
 
 #define NOTE_PAN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED,\
-                                [84] = 106,\
-                                [86] = 97,\
-                                [88] = 90,\
-                                [89] = 82,\
-                                [91] = 75,\
-                                [93] = 67,\
-                                [95] = 59,\
-                                [96] = 50 };
+                                [84] = 119,\
+                                [86] = 110,\
+                                [88] = 102,\
+                                [89] = 95,\
+                                [91] = 87,\
+                                [93] = 78,\
+                                [95] = 70,\
+                                [96] = 60 };
 
 // we're not using NOTE_PINS here, so define an empty init...
 #define NOTE_PIN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED };

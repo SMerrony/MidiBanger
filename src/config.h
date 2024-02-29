@@ -27,7 +27,7 @@
 // The MIDI notes, C4 is middle-C in MIDI-speak.
 typedef int notepins_t[128];
 typedef uint16_t noteangle_t[128];
-// Indices for the P&T servos - i.e which of the servos[] array to use
+// Internal indices for the P&T servos - i.e which of the servos[] array to use
 #define PAN_SERVO 0
 #define TILT_SERVO 1  
 // ...end of do not edit section

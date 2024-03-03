@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: 2023 Stephen Merrony
+ * SPDX-FileCopyrightText: 2023,2024 Stephen Merrony
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -7,7 +7,6 @@
 #include "pico/stdlib.h"
 #include "tusb.h"
 
-// #include "gpio.h"
 #include "midi.h"
 #include "servo.h"
 #include "speaker.h"

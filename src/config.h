@@ -5,6 +5,8 @@
 
 #pragma once
 
+#define VERSION "0.1.0-dev"
+
 #define USB_MANUFACTURER   "SMerrony"
 
 // MIDI Channel to listen on. 
@@ -16,7 +18,7 @@
 #define WITH_SPEAKER false
 #define SPEAKER_PIN 15 
 
-// Servo characteristics, these are the spec. values, you may be able to exceed them.
+// General servo characteristics, these are the spec. values, you may be able to exceed them.
 #define SERVO_MIN_DUTY 500
 #define SERVO_MAX_DUTY 2400
 #define SERVO_MIN_ANGLE 0
@@ -45,8 +47,6 @@ typedef uint16_t noteangle_t[128];
                                 [84] = 9 };
 */                                
 
-#define PAN_PIN  6              // GPIO pin for the pan servo control signal
-#define TILT_PIN 10             // ...and for the tilt servo
-
-// #include "chicco_toy_glock_config.h"
-#include "janod_toy_glock_config.h"
+// Here you must #include a config file specific to the instrument you are playing
+#include "chicco_toy_glock_config.h"
+// #include "janod_toy_glock_config.h"

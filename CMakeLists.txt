@@ -5,16 +5,16 @@ cmake_minimum_required(VERSION 3.28)
 
 include(pico_sdk_import.cmake)
 
-project(midibanger 
-        VERSION 0.1.0
-        LANGUAGES C CXX ASM)
+project(midibanger LANGUAGES C CXX ASM)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-set(PICO_BOARD pico) # or pico_w, or waveshare_rp2040_zero, etc.
+set(PICO_BOARD pico)
+# set(PICO_BOARD pico_w)
+# set(PICO_BOARD waveshare_rp2040_zero)
 pico_sdk_init()
 
 add_executable(
@@ -41,3 +41,5 @@ target_link_libraries(
     tinyusb_device
     tinyusb_board
     )
+
+pico_set_program_url(midibanger "https://github.com/SMerrony/MidiBanger") 

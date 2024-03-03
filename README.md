@@ -1,14 +1,16 @@
 # MidiBanger
-A Raspberry Pico MIDI device that plays physical (toy) instruments via servos.
+A Raspberry Pico* MIDI device that plays physical (toy) instruments via servos.
 
 MidiBanger supports both percussive (mallet-type) and pressed (key-type) instruments.
 
-The initial version supports up to 16 directly-connected servos, later versions may
-support I2C servo controllers allowing hundreds of servos to be used.  Also planned
-is the ability to use solenoids rather than servos.
+* Pan-and-tilt mode using just two servos to play reachable notes
+* Servo-per-note mode
+* Solenoid-per-note mode (soon)
 
-There is also support for a single hammer 'tilt and pan' mode using only two servos to 
-play all reachable notes.
+The current version supports up to 16 directly-connected servos, later versions may
+support I2C servo controllers allowing hundreds of servos to be used. 
+
+*Tested on Raspberry Pi Pico, Raspberry Pi Pico W, and Waveshare RP2040-Zero.
 
 ![Pan-and-tilt version playing Janod toy glockenspiel](images/MidiBanger_Janod_1.jpg)
 

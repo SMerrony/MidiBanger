@@ -14,6 +14,9 @@
 // Set PAN_AND_TILT to true if this is a (single hammer) pan-and-tilt player.
 #define PAN_AND_TILT true
 
+#define PAN_PIN  10             // GPIO pin for the pan servo control signal
+#define TILT_PIN 11             // ...and for the tilt servo
+
 // Period before 'hammer' starts to return (may influence length of stroke)
 #define PERCUSSIVE_RETURN_MS 50
 
@@ -23,14 +26,14 @@
 #define TILT_STRIKE_ANGLE 74    // Striking height
 
 #define NOTE_PAN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED,\
-                                [84] = 119,\
+                                [84] = 118,\
                                 [86] = 110,\
                                 [88] = 102,\
                                 [89] = 95,\
                                 [91] = 87,\
-                                [93] = 78,\
+                                [93] = 79,\
                                 [95] = 70,\
-                                [96] = 60 };
+                                [96] = 61 };
 
 // we're not using NOTE_PINS here, so define an empty init...
 #define NOTE_PIN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED };

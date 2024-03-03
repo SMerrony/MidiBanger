@@ -14,6 +14,10 @@
 // Set PAN_AND_TILT to true if this is a (single hammer) pan-and-tilt player.
 #define PAN_AND_TILT true
 
+#define PAN_PIN  3              // GPIO pin for the pan servo control signal
+#define TILT_PIN 4              // ...and for the tilt servo
+
+
 // Period before 'hammer' starts to return (may influence length of stroke)
 #define PERCUSSIVE_RETURN_MS 50
 

@@ -26,14 +26,14 @@
 #define TILT_STRIKE_ANGLE 74    // Striking height
 
 #define NOTE_PAN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED,\
-                                [84] = 118,\
-                                [86] = 110,\
-                                [88] = 102,\
-                                [89] = 95,\
-                                [91] = 87,\
-                                [93] = 79,\
-                                [95] = 70,\
-                                [96] = 61 };
+                                [96]  = 118,\
+                                [98]  = 110,\
+                                [100] = 102,\
+                                [101] = 95,\
+                                [103] = 87,\
+                                [105] = 79,\
+                                [107] = 70,\
+                                [108] = 61 };
 
 // we're not using NOTE_PINS here, so define an empty init...
 #define NOTE_PIN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED };

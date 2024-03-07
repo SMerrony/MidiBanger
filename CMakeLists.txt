@@ -12,9 +12,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-set(PICO_BOARD pico)
+# Must set one of these...
+# set(PICO_BOARD pico)
 # set(PICO_BOARD pico_w)
-# set(PICO_BOARD waveshare_rp2040_zero)
+set(PICO_BOARD waveshare_rp2040_zero)
+
 pico_sdk_init()
 
 add_executable(

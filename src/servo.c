@@ -57,7 +57,7 @@ void servo_setup(int servo, uint pin, uint16_t zero_duty, uint16_t full_duty, ui
     servos[servo].configured = true;
 
     uint32_t clock  = clock_get_hz(clk_sys);
-    uint32_t divisor = clock / (20000 * 50); // for 50Hz on a default 125MHz RP2020
+    uint32_t divisor = clock / SERVO_HZ;
 
     pwm_config config = pwm_get_default_config();
     pwm_config_set_clkdiv(&config, (float)divisor);

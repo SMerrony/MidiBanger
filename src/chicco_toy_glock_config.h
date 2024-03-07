@@ -21,20 +21,20 @@
 // Period before 'hammer' starts to return (may influence length of stroke)
 #define PERCUSSIVE_RETURN_MS 50
 
-#define PAN_SETTLE_MS 175       // Time to wait for panning to settle before striking note
-#define PAN_REST_ANGLE 74       // Default postion at start-up
-#define TILT_REST_ANGLE 80      // Default hammer height
-#define TILT_STRIKE_ANGLE 77    // Striking height
+#define PAN_SETTLE_MS 160       // Time to wait for panning to settle before striking note
+#define PAN_REST_ANGLE 52       // Default postion at start-up
+#define TILT_REST_ANGLE 55      // Default hammer height
+#define TILT_STRIKE_ANGLE 50    // Striking height
 
 #define NOTE_PAN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED,\
-                                [84] = 101,\
-                                [86] = 95,\
-                                [88] = 89,\
-                                [89] = 82,\
-                                [91] = 74,\
-                                [93] = 68,\
-                                [95] = 61,\
-                                [96] = 56 };
+                                [84] = 73,\
+                                [86] = 67,\
+                                [88] = 62,\
+                                [89] = 56,\
+                                [91] = 52,\
+                                [93] = 46,\
+                                [95] = 41,\
+                                [96] = 35 };
 
 // we're not using NOTE_PINS here, so define an empty init...
 #define NOTE_PIN_INITIALISER { [0 ... 127] = NOTE_NOT_MAPPED };

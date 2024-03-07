@@ -19,6 +19,7 @@
 #define SPEAKER_PIN 15 
 
 // General servo characteristics, these are the spec. values, you may be able to exceed them.
+#define SERVO_HZ 50
 #define SERVO_MIN_DUTY 500
 #define SERVO_MAX_DUTY 2400
 #define SERVO_MIN_ANGLE 0
@@ -48,5 +49,5 @@ typedef uint16_t noteangle_t[128];
 */                                
 
 // Here you must #include a config file specific to the instrument you are playing
-#include "chicco_toy_glock_config.h"
-// #include "janod_toy_glock_config.h"
+// #include "chicco_toy_glock_config.h"
+#include "janod_toy_glock_config.h"

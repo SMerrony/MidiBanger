@@ -49,5 +49,5 @@ typedef uint16_t noteangle_t[128];
 */                                
 
 // Here you must #include a config file specific to the instrument you are playing
-// #include "chicco_toy_glock_config.h"
-#include "janod_toy_glock_config.h"
+#include "chicco_toy_glock_config.h"
+// #include "janod_toy_glock_config.h"
